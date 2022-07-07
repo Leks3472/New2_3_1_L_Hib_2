@@ -4,60 +4,57 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.leks3472.web.models.User;
 
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Component
+
+@Repository
 public class UserDaoImp implements UserDao{
 
-    private SessionFactory sessionFactory;
-
-    @Autowired
-    public UserDaoImp(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Transactional(readOnly = true)
     @Override
     public List<User> index() {
-        Session session = sessionFactory.getCurrentSession();
 
-        return session.createQuery("select p from User p", User.class)
+        return entityManager.createQuery("select p from User p", User.class)
                 .getResultList();
     }
 
     @Transactional(readOnly = true)
     @Override
     public User show(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(User.class, id);
+
+        return entityManager.find(User.class, id);
     }
 
     @Transactional
     @Override
     public void save(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.save(user);
+
+        entityManager.persist(user);
     }
 
     @Transactional
     @Override
-    public void update(int id, User updatedUser) {
-        Session session = sessionFactory.getCurrentSession();
-        User userToBeUpdated = session.get(User.class, id);
+    public void update(User updatedUser) {
 
-        userToBeUpdated.setName(updatedUser.getName());
-        userToBeUpdated.setAge(updatedUser.getAge());
-        userToBeUpdated.setEmail(updatedUser.getEmail());
+        entityManager.merge(updatedUser);
+
+
     }
 
     @Transactional
     @Override
     public void delete(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        session.remove(session.get(User.class, id));
+
+        entityManager.remove(show(id));
     }
 }
