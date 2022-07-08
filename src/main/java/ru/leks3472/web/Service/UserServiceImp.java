@@ -1,13 +1,10 @@
 package ru.leks3472.web.Service;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.leks3472.web.dao.UserDao;
-import ru.leks3472.web.dao.UserDaoImp;
 import ru.leks3472.web.models.User;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
@@ -20,13 +17,13 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<User> index() {
         return userDao.index();
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public User show(int id) {
         return userDao.show(id);
     }

@@ -20,7 +20,6 @@ public class UserDaoImp implements UserDao{
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional(readOnly = true)
     @Override
     public List<User> index() {
 
@@ -28,7 +27,6 @@ public class UserDaoImp implements UserDao{
                 .getResultList();
     }
 
-    @Transactional(readOnly = true)
     @Override
     public User show(int id) {
 

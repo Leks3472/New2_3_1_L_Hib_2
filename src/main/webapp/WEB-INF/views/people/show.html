@@ -2,16 +2,32 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Человек</title>
+    <title>User</title>
 </head>
 <body>
-<p th:text="${user.getName() + ', ' + user.getAge()}">VALUE</p>
-<p th:text="${'Email: ' + user.getEmail()}">VALUE</p>
-<p th:text="${user.getId()}">VALUE</p>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
 
+    <td th:text="${user.getId()}">Value</td>
+    <td th:text="${user.getName()}">Value</td>
+    <td th:text="${user.getAge()}">Value</td>
+    <td th:text="${user.getEmail()}">Value</td>
+
+    </tbody>
+</table>
+<br/>
 <a th:href="@{/people/{id}/edit(id=${user.getId()})}">Edit</a>
-
+<br/>
 <form th:method="DELETE" th:action="@{/people/{id}(id=${user.getId()})}">
+    <br/>
     <input type="submit" value="Delete"/>
 </form>
 </body>
